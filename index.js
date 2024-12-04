@@ -9,22 +9,25 @@ function saveTasks() {
 function addOrEditTask() {
   const name = document.getElementById("task").value.trim();
   const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("dueDate").value;
+
 
   if (!name || !description) return alert("Please fill all fields!");
 
   if (editIndex !== null) {
     // Edit
-    tasks[editIndex] = { ...tasks[editIndex], name, description };
+    tasks[editIndex] = { ...tasks[editIndex], name, description, dueDate };
     editIndex = null; //Clear editIndex after editing
     document.getElementById("addTaskButton").textContent = "Add Task";
   } else {
     // Add
-    tasks.push({ name, description, status: "open" });
+    tasks.push({ name, description, dueDate, status: "open" });
   }
 
   saveTasks();
   document.getElementById("task").value = "";
   document.getElementById("description").value = "";
+  document.getElementById("dueDate").value = "";
 }
 
 function updateStatus(index) {
@@ -36,6 +39,7 @@ function editTask(index) {
   const task = tasks[index];
   document.getElementById("task").value = task.name;
   document.getElementById("description").value = task.description;
+  document.getElementById("dueDate").value = task.dueDate;
   editIndex = index;
   document.getElementById("addTaskButton").textContent = "Edit Task";
 }
@@ -61,6 +65,7 @@ function renderTasks(filter = "all") {
           <div>
             <h3 class="font-bold">${task.name}</h3>
             <p class="text-gray-900">${task.description}</p>
+            <p class="text-gray-600">Due: ${task.dueDate}</p>
             <p class="text-sm text-${task.status === "completed" ? "green" : "blue"}-500">${task.status}</p>
           </div>
           <div class="mt-2 md:mt-0 flex space-x-2">
